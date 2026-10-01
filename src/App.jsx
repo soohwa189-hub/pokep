@@ -28,12 +28,10 @@ function App() {
         <Route path='/coleccion' element={<Coleccion />} />
         <Route path='/favoritos' element={<Favoritos />} />
         <Route path='/info' element={<Info />} />
-        <Route path='/usuario' element={<Usuario/>} />
+        <Route path='/Usuario' element={<Usuario/>} />
        <Route path="/pokemon/:name" element={<Pokemon />} />
       </Routes>
     </Router>
-
-      
 
     </>
   )

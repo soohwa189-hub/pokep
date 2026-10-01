@@ -1,5 +1,14 @@
+*{
+    margin: 0;
+    box-sizing: border-box;
+}
+
+section{
+    padding-bottom: 100px;
+}
+
 .c-menu{
-    background-color: silver;
+    background-color: rgb(218, 199, 199);
     flex-wrap: wrap;
     position: fixed;
     bottom: 0;
