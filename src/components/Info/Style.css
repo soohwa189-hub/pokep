@@ -1,0 +1,13 @@
+
+.info-page {
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+.portada-pokemon {
+  display: block;
+  width: 100%;
+  height: auto;
+}

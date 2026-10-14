@@ -1,22 +1,41 @@
-import { useParams } from "react-router-dom"
+import { useParams } from "react-router-dom"; 
 import { useState, useEffect } from 'react'
 import './Style.css'
 
-
 function Pokemon() {
-        const { name } = useParams(); 
-        const [datapoke, setDatapoke] = useState([]);
- useEffect(() => {
+    const { name } = useParams(); 
+    const [datapoke, setDatapoke] = useState([]);
+    const [favoritos, setFavoritos] = useState(() => {
+        try {
+            return JSON.parse(localStorage.getItem('favoritos') || '[]');
+        } catch {
+            return [];
+        }
+    });
+    const esFavorito = favoritos.some(p => p.id === datapoke.id);
+
+
+    useEffect(() => {
     fetch(`https://pokeapi.co/api/v2/pokemon/${name}`)
       .then(response => response.json())
       .then(responseData => setDatapoke(responseData))
       .catch(error => console.error("Error:", error));
-    }, [name]);
-    console.log(datapoke)
+    }, [name]); 
 
-     if (!datapoke || !datapoke.id) return <p>Cargando...</p>;
+    const toggleFavorito = () => {
+        let nuevosFavoritos;
+        if (esFavorito) {
+        nuevosFavoritos = favoritos.filter(p => p.id !== datapoke.id);
+        } else {
+        nuevosFavoritos = [...favoritos, { id: datapoke.id, nombre: datapoke.name }];
+        }
+        setFavoritos(nuevosFavoritos);
+        localStorage.setItem('favoritos', JSON.stringify(nuevosFavoritos));
+    };
+    
+    if (!datapoke || !datapoke.id) return <p>Cargando...</p>;
     return (
-         <div>
+        <div>
         <p>{datapoke.id}</p>
         <h1>{datapoke.name}</h1>
         <img 
@@ -28,17 +47,17 @@ function Pokemon() {
         <p>{datapoke.id}</p>
         <p>Altura: {datapoke.height/ 10} m / Peso: {datapoke.weight/ 10} kg</p>
 
-        {datapoke.types && (
-          <p>Tipo(s): {datapoke.types.map(t => t.type.name).join(', ')}</p>
-        )}
         <p>hp: {datapoke.stats[0].base_stat}</p>
         <p>Velocidad: {datapoke.stats[5].base_stat}</p>
         <p>Ataque: {datapoke.stats[1].base_stat} Defensa: {datapoke.stats[2].base_stat}</p>
         <p>Ataque Especial: {datapoke.stats[3].base_stat} Defensa Especial: {datapoke.stats[4].base_stat}</p>
 
+
+            <button onClick={toggleFavorito}>
+            {esFavorito ? '❤️' : '🤍'}
+            </button>
         </div>
     )
-  
 }
 
 export default Pokemon
